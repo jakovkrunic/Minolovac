@@ -2,18 +2,10 @@
 int velicinaPolja = 25;
 int brojMina = 40;    //neka bude tocno mina koliko je tu zadano
 int cols, rows;
+boolean firstClick = false;
 
 Cell[][] grid;
 
-/* Boje za brojeve mina-->implementirano
-1 blue
-2 green
-3 red
-4 dark blue
-5 brown
-6 Cyan
-7 Black
-8 White*/
 
 void setup() {
   size(400, 400);
@@ -29,32 +21,46 @@ void setup() {
     }
   }
   
-  set_mines(rows,cols);  //zasad je tu, kasnije cemo postavit mine nakon prvog klika
-  set_numbers(rows,cols);  //zasad je tu, kasnije cemo postavit brojeve nakon prvog klika
+  //set_mines(rows,cols);  //zasad je tu, kasnije cemo postavit mine nakon prvog klika
+  //set_numbers(rows,cols);  //zasad je tu, kasnije cemo postavit brojeve nakon prvog klika
                             //u pravoj igri je prvi klik uvijek nula, mogli bi i mi tako
 }
 
 //postavi mine na random pozicije
 
-void set_mines(int rows,int cols)
+void set_mines(int rows,int cols, int x, int y)
 {
   int[] a = new int[cols*rows];
   for (int i = 0; i < a.length; i++)
     a[i] = i;
   
   for (int i = 0; i < a.length; i++) {
-    int ridx = (int)random(0, a.length); 
+    int ridx = (int)random(0, a.length);
     int temp = a[i];
     a[i] = a[ridx];
     a[ridx] = temp;
   } 
   
-  for(int i = 0; i < brojMina; i++)
-  {
-    grid[a[i]/cols][a[i]%cols].mina=true;
-  }
+  
+  int br = 0;
+  int k = 0;
+ 
+ while(true)
+ {
+    if(!(grid[a[k]/cols][a[k]%cols].isChosen(x,y) || grid[a[k]/cols][a[k]%cols].isNeighbour(x,y))) 
+    { 
+      grid[a[k]/cols][a[k]%cols].mina=true; 
+      br++;  
+    }
+    
+    k++;
+    if(br >= brojMina) break;
+ }    
+
+  
      
 }
+
 
 //postavi brojeve svim celijama
 
@@ -108,22 +114,50 @@ void draw() {
 
 void mousePressed(){
   
-  for (int i = 0; i < rows; i++) 
-    for (int j = 0; j < cols; j++)
-    {
-      if(grid[i][j].isChosen(mouseX, mouseY) && (mouseButton == LEFT)
-         && !grid[i][j].zastavica && !grid[i][j].otvoreno)
-        grid[i][j].otvoreno = true;
+  if(!firstClick)
+  {
+    firstClick = true;
+    set_mines(rows, cols, mouseX, mouseY);
+    set_numbers(rows, cols);
+    countMines();
+    
+  }
+  
+  
+  
+  
+ // else{
+    for (int i = 0; i < rows; i++) 
+      for (int j = 0; j < cols; j++)
+      {
+        if(grid[i][j].isChosen(mouseX, mouseY) && (mouseButton == LEFT)
+           && !grid[i][j].zastavica && !grid[i][j].otvoreno)
+          grid[i][j].otvoreno = true;
         
-        else if(grid[i][j].isChosen(mouseX, mouseY) && (mouseButton == RIGHT)
+          else if(grid[i][j].isChosen(mouseX, mouseY) && (mouseButton == RIGHT)
                  && !grid[i][j].otvoreno)
-        {
-          if(grid[i][j].zastavica)
-           grid[i][j].zastavica = false;
+          {
+            if(grid[i][j].zastavica)
+             grid[i][j].zastavica = false;
            
-           else grid[i][j].zastavica = true;
-        } 
-    }
+             else grid[i][j].zastavica = true;
+          } 
+      }
+   // }
+}
+
+
+
+
+void countMines()
+{
+  int br = 0;
+  for(int i = 0; i < rows; ++i)
+  for(int j = 0; j < cols; ++j)
+  if(grid[i][j].mina)
+  br++;
+  
+  println(br);
 }
 
 class Cell
@@ -141,7 +175,7 @@ class Cell
     this.velicina = velicina;
     
     this.mina=false;
-    this.otvoreno = false;
+    this.otvoreno = true;
     this.zastavica = false;
     this.broj=-1;
   }
@@ -217,5 +251,44 @@ class Cell
           
           return false;
    }
+   
+   
+boolean isNeighbour(int nx, int ny)
+{
+  //dolje desno
+  if(this.x-this.velicina <= nx  && this.x >= nx && this.y-this.velicina <= ny && this.y >= ny)
+    return true;
+  
+  //desno
+  if(this.x-this.velicina <= nx  && this.x >= nx && this.y+this.velicina >= ny && this.y <= ny)
+    return true;
+ 
+ //dolje
+ if(this.x+this.velicina >= nx  && this.x <= nx && this.y-this.velicina <= ny && this.y >= ny)
+    return true;  
+ 
+  //dolje lijevo
+ if(this.x+this.velicina <= nx  && this.x+2*this.velicina >= nx && this.y-this.velicina <= ny && this.y >= ny)
+    return true;
+ 
+  //gore lijevo
+ if(this.x+this.velicina <= nx  && this.x+2*this.velicina >= nx && this.y+this.velicina <= ny && this.y+2*this.velicina >= ny)
+    return true;
+   
+  //gore
+ if(this.x+this.velicina >= nx  && this.x <= nx && this.y+this.velicina <= ny && this.y+2*this.velicina >= ny)
+    return true;
+    
+   //gore desno
+ if(this.x-this.velicina <= nx  && this.x >= nx && this.y+this.velicina <= ny && this.y+2*this.velicina >= ny)
+    return true;
+ 
+ //lijevo
+ if(this.x+2*this.velicina >= nx  && this.x+this.velicina <= nx && this.y+this.velicina >= ny && this.y <= ny)
+    return true;
+    
+    return false;
+  
+}
    
 }
