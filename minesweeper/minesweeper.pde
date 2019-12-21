@@ -125,14 +125,20 @@ void draw() {
         grid[i][j].drawCell();
         if(grid[i][j].mina)
         {
-          grid[i][j].otvoreno = true;
-          if(grid[i][j].pogodena)
-          {  
-             PImage mina;   
-             mina = loadImage("minared.jpg");
-             image(mina,  grid[i][j].x+1,  grid[i][j].y+1,  grid[i][j].velicina-1,  grid[i][j].velicina-1);
-          }
-            
+          if(!grid[i][j].zastavica)
+            grid[i][j].otvoreno = true;
+            if(grid[i][j].pogodena)
+            {  
+               PImage mina;   
+               mina = loadImage("minared.jpg");
+               image(mina,  grid[i][j].x+1,  grid[i][j].y+1,  grid[i][j].velicina-1,  grid[i][j].velicina-1);
+            }         
+        }
+        else if(!grid[i][j].mina && grid[i][j].zastavica)
+        {
+          PImage mina;   
+          mina = loadImage("minacrossed.jpg");
+          image(mina,  grid[i][j].x+1,  grid[i][j].y+1,  grid[i][j].velicina-1,  grid[i][j].velicina-1);
         }
       }
     //fill(0);
@@ -150,16 +156,13 @@ void mousePressed(){
       firstClick = true;
       set_mines(rows, cols, mouseX, mouseY);
       set_numbers(rows, cols);
-      countMines();
-    
+      //countMines();  
     }
-  
-  
   
     for (int i = 0; i < rows; i++) 
       for (int j = 0; j < cols; j++)
       {
-        if(grid[i][j].isChosen(mouseX, mouseY) && (mouseButton == LEFT)
+          if(grid[i][j].isChosen(mouseX, mouseY) && (mouseButton == LEFT)
            && !grid[i][j].zastavica && !grid[i][j].otvoreno)
           {
             grid[i][j].otvoreno = true;
@@ -183,12 +186,18 @@ void mousePressed(){
              grid[i][j].zastavica = false;
            
              else grid[i][j].zastavica = true;
-          } 
+          }
+          
+          else if(grid[i][j].isChosen(mouseX, mouseY) && (mouseButton == CENTER)
+                 && grid[i][j].otvoreno)
+          {
+            highlight_closed_neighbours(i,j);
+          }
+
       }
   }
   
 }
-
 
 void open_neighbours(int x, int y)
 {
@@ -198,14 +207,41 @@ void open_neighbours(int x, int y)
     Cell susjed = susjedi.get(k);
     susjed.otvoreno = true;     
   }
-   
+  
 }
 
+//istakni zatvorene susjede kad se klikne srednji na misu
+void highlight_closed_neighbours(int x, int y)
+{
+  ArrayList<Cell> susjedi = grid[x][y].getNeighbours();
+  for(int k = 0; k < susjedi.size(); k++)
+  {
+    Cell susjed = susjedi.get(k);
+    if(!susjed.otvoreno)
+    {
+      susjed.istaknuta=true;
+      susjed.drawCell();
+    }
+  }
+  delay(100);
+  highlight_back_closed_neighbours(x,y);
+}
 
+//vrati zatvorene susjede na zatvoreno polje kad se pusti srednji na misu
+void highlight_back_closed_neighbours(int x, int y)
+{
+  ArrayList<Cell> susjedi = grid[x][y].getNeighbours();
+  for(int k = 0; k < susjedi.size(); k++)
+  {
+    Cell susjed = susjedi.get(k);
+    if(!susjed.otvoreno)
+    {
+      susjed.istaknuta=false;
+    }
+  }
+}
 
-
-
-void countMines()
+/*void countMines()
 {
   int br = 0;
   for(int i = 0; i < rows; ++i)
@@ -214,4 +250,4 @@ void countMines()
   br++;
   
   println(br);
-}
+}*/

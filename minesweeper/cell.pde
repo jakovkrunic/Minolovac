@@ -1,10 +1,3 @@
-
-
-
-
-
-
-
 class Cell
 {
   int x, y, velicina;
@@ -14,6 +7,7 @@ class Cell
   int broj;          //svaka celija koja nije mina ima broj (koliko ima mina u susjednim celijama)
   
   boolean pogodena = false;
+  boolean istaknuta = false;
   
   Cell(int x, int y, int velicina)
   {
@@ -29,10 +23,16 @@ class Cell
   
   void drawCell() 
   { 
-    fill(200,200,200);
-    stroke(0);
-    rect(this.x, this.y, this.velicina, this.velicina); 
-    if(this.otvoreno)
+    //fill(220,220,220);
+    //stroke(0);
+    //rect(this.x, this.y, this.velicina, this.velicina);
+    if(this.istaknuta)
+    {
+      fill(192,192,192);
+      stroke(105,105,105);
+      rect(this.x, this.y, this.velicina, this.velicina);
+    }
+    else if(this.otvoreno)
     {
       if(this.mina)
       {
@@ -47,7 +47,8 @@ class Cell
       
       else
       {
-        fill(127);
+        fill(192,192,192);
+        stroke(105,105,105);
         rect(this.x, this.y, this.velicina, this.velicina);
         if(this.broj>0)
         {
@@ -56,7 +57,7 @@ class Cell
               fill(0,0,255);  
               break;
             case 2: 
-              fill(0,255,0);  
+              fill(0,100,0);  
               break;
             case 3: 
               fill(255,0,0);  
@@ -86,14 +87,20 @@ class Cell
     }
     
     else if(this.zastavica)
-      {
+    {
         //fill(255,0,0);
         //ellipse(this.x + this.velicina*0.5, this.y + this.velicina*0.5,
           //          this.velicina*0.5, this.velicina*0.5);
-          PImage zastavica;
-          zastavica = loadImage("zastavica.png");
-          image(zastavica, this.x+1, this.y+1, this.velicina-1, this.velicina-1);
-      }
+       PImage zastavica;
+       zastavica = loadImage("zastavica.png");
+       image(zastavica, this.x+1, this.y+1, this.velicina-1, this.velicina-1);
+     }
+     else
+     {
+       PImage polje;
+       polje = loadImage("polje.png");
+       image(polje, this.x+1, this.y+1, this.velicina-1, this.velicina-1);
+     }
       
    }
    
@@ -161,5 +168,4 @@ class Cell
   }
   
   
-   
 }
