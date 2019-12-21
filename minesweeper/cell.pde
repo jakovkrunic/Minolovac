@@ -13,6 +13,8 @@ class Cell
   boolean zastavica;
   int broj;          //svaka celija koja nije mina ima broj (koliko ima mina u susjednim celijama)
   
+  boolean pogodena = false;
+  
   Cell(int x, int y, int velicina)
   {
     this.x = x;

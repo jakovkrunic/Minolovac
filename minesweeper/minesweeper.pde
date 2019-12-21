@@ -2,7 +2,7 @@
 import java.util.ArrayList;
 //import java.util.List;
 
-
+int gameState = 1; // ovo promijeniti na 0 kad se ubaci pocetni izbornik
 
 int velicinaPolja = 25;
 int brojMina = 40;  
@@ -106,27 +106,53 @@ int neighbour_mines(int i, int j, int r, int c)
 }
 
 void draw() {
-
-  for (int i = 0; i < rows; i++) 
-    for (int j = 0; j < cols; j++)
+  
+  if(gameState == 1){
+    for (int i = 0; i < rows; i++) 
+      for (int j = 0; j < cols; j++)
       {
         grid[i][j].drawCell();
         if(grid[i][j].broj == 0 && grid[i][j].otvoreno)
           open_neighbours(i,j);
       }
-    
+  }
+  
+  else if(gameState == 2)
+  {
+    for (int i = 0; i < rows; i++) 
+      for (int j = 0; j < cols; j++)
+      {
+        grid[i][j].drawCell();
+        if(grid[i][j].mina)
+        {
+          grid[i][j].otvoreno = true;
+          if(grid[i][j].pogodena)
+          {  
+             PImage mina;   
+             mina = loadImage("minared.jpg");
+             image(mina,  grid[i][j].x+1,  grid[i][j].y+1,  grid[i][j].velicina-1,  grid[i][j].velicina-1);
+          }
+            
+        }
+      }
+    //fill(0);
+    //textSize(50);
+    //text("Game over", 200, 200);
+  }
 }
 
 void mousePressed(){
   
-  if(!firstClick)
+  if(gameState == 1)
   {
-    firstClick = true;
-    set_mines(rows, cols, mouseX, mouseY);
-    set_numbers(rows, cols);
-    countMines();
+    if(!firstClick)
+    {
+      firstClick = true;
+      set_mines(rows, cols, mouseX, mouseY);
+      set_numbers(rows, cols);
+      countMines();
     
-  }
+    }
   
   
   
@@ -137,6 +163,13 @@ void mousePressed(){
            && !grid[i][j].zastavica && !grid[i][j].otvoreno)
           {
             grid[i][j].otvoreno = true;
+            
+            if(grid[i][j].mina)
+            {
+              grid[i][j].pogodena = true;
+              delay(200);
+              gameState = 2;
+            }
             
             if(grid[i][j].broj == 0)
               open_neighbours(i, j);
@@ -152,6 +185,7 @@ void mousePressed(){
              else grid[i][j].zastavica = true;
           } 
       }
+  }
   
 }
 
