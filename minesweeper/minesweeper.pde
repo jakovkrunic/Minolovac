@@ -1,6 +1,6 @@
 
 import java.util.ArrayList;
-import java.util.List;
+//import java.util.List;
 
 
 
@@ -162,12 +162,8 @@ void open_neighbours(int x, int y)
   for(int k = 0; k < susjedi.size(); k++)
   {
     Cell susjed = susjedi.get(k);
-    susjed.otvoreno = true;
-    
-    //if(susjed.x >= 0 && susjed.x <= rows && susjed.y >= 0 && susjed.y <= cols && susjed.broj == 0)
-      //open_neighbours(susjed.x, susjed.y);
-     
-    }
+    susjed.otvoreno = true;     
+  }
    
 }
 

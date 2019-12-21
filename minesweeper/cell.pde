@@ -34,9 +34,13 @@ class Cell
     {
       if(this.mina)
       {
-        fill(0);
-        ellipse(this.x + this.velicina*0.5, this.y + this.velicina*0.5,
-                    this.velicina*0.5, this.velicina*0.5);
+        //fill(0);
+        //ellipse(this.x + this.velicina*0.5, this.y + this.velicina*0.5,
+          //this.velicina*0.5, this.velicina*0.5);
+          
+           PImage mina;
+           mina = loadImage("mina.jpg");
+           image(mina, this.x+1, this.y+1, this.velicina-1, this.velicina-1);
       }
       
       else
@@ -81,9 +85,12 @@ class Cell
     
     else if(this.zastavica)
       {
-        fill(255,0,0);
-        ellipse(this.x + this.velicina*0.5, this.y + this.velicina*0.5,
-                    this.velicina*0.5, this.velicina*0.5);
+        //fill(255,0,0);
+        //ellipse(this.x + this.velicina*0.5, this.y + this.velicina*0.5,
+          //          this.velicina*0.5, this.velicina*0.5);
+          PImage zastavica;
+          zastavica = loadImage("zastavica.png");
+          image(zastavica, this.x+1, this.y+1, this.velicina-1, this.velicina-1);
       }
       
    }
