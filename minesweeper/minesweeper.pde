@@ -1,3 +1,6 @@
+  
+import processing.sound.*;
+SoundFile zvuk,eksplozija;
 
 import java.util.ArrayList;
 //import java.util.List;
@@ -14,6 +17,7 @@ Cell[][] grid;
 
 void setup() {
   size(400, 400);
+  
   cols = width/velicinaPolja;
   rows = height/velicinaPolja;
   
@@ -141,6 +145,7 @@ void draw() {
           image(mina,  grid[i][j].x+1,  grid[i][j].y+1,  grid[i][j].velicina-1,  grid[i][j].velicina-1);
         }
       }
+    zvuk.stop();
     //fill(0);
     //textSize(50);
     //text("Game over", 200, 200);
@@ -156,6 +161,8 @@ void mousePressed(){
       firstClick = true;
       set_mines(rows, cols, mouseX, mouseY);
       set_numbers(rows, cols);
+      zvuk = new SoundFile(this, "pozadinski zvuk.mp3");
+      zvuk.loop();
       //countMines();  
     }
   
@@ -172,6 +179,8 @@ void mousePressed(){
               grid[i][j].pogodena = true;
               delay(200);
               gameState = 2;
+              eksplozija = new SoundFile(this, "eksplozija.mp3");
+              eksplozija.play();
             }
             
             if(grid[i][j].broj == 0)
@@ -268,6 +277,8 @@ void open_closed_neighbours(int x, int y)
   {
     delay(200);
     gameState = 2;
+    eksplozija = new SoundFile(this, "eksplozija.mp3");
+    eksplozija.play();
   }
 }
 
