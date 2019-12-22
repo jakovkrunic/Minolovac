@@ -189,9 +189,14 @@ void mousePressed(){
           }
           
           else if(grid[i][j].isChosen(mouseX, mouseY) && (mouseButton == CENTER)
-                 && grid[i][j].otvoreno)
+                 && grid[i][j].otvoreno && neighbour_flags(i,j)!=grid[i][j].broj)
           {
             highlight_closed_neighbours(i,j);
+          }
+          else if(grid[i][j].isChosen(mouseX, mouseY) && (mouseButton == CENTER)
+                 && grid[i][j].otvoreno && neighbour_flags(i,j)==grid[i][j].broj)
+          {
+            open_closed_neighbours(i,j);
           }
 
       }
@@ -210,14 +215,14 @@ void open_neighbours(int x, int y)
   
 }
 
-//istakni zatvorene susjede kad se klikne srednji na misu
+//istakni zatvorene susjede (bez zastavice) 
 void highlight_closed_neighbours(int x, int y)
 {
   ArrayList<Cell> susjedi = grid[x][y].getNeighbours();
   for(int k = 0; k < susjedi.size(); k++)
   {
     Cell susjed = susjedi.get(k);
-    if(!susjed.otvoreno)
+    if(!susjed.otvoreno && !susjed.zastavica)
     {
       susjed.istaknuta=true;
       susjed.drawCell();
@@ -227,18 +232,59 @@ void highlight_closed_neighbours(int x, int y)
   highlight_back_closed_neighbours(x,y);
 }
 
-//vrati zatvorene susjede na zatvoreno polje kad se pusti srednji na misu
+//vrati zatvorene susjede (bez zastavice) na zatvoreno polje 
 void highlight_back_closed_neighbours(int x, int y)
 {
   ArrayList<Cell> susjedi = grid[x][y].getNeighbours();
   for(int k = 0; k < susjedi.size(); k++)
   {
     Cell susjed = susjedi.get(k);
-    if(!susjed.otvoreno)
+    if(!susjed.otvoreno && !susjed.zastavica)
     {
       susjed.istaknuta=false;
     }
   }
+}
+
+//otvori zatvorene susjede (bez zastavice) 
+void open_closed_neighbours(int x, int y)
+{
+  boolean kraj=false;
+  ArrayList<Cell> susjedi = grid[x][y].getNeighbours();
+  for(int k = 0; k < susjedi.size(); k++)
+  {
+    Cell susjed = susjedi.get(k);
+    if(!susjed.otvoreno && !susjed.zastavica)
+    {
+      susjed.otvoreno=true;
+      if(susjed.mina)
+      {
+          susjed.pogodena = true;
+          kraj = true;
+      }
+    }
+  }
+  if(kraj)
+  {
+    delay(200);
+    gameState = 2;
+  }
+}
+
+//izbroji koliko susjeda ima postavljenu zastavicu
+int neighbour_flags(int x, int y)
+{
+  int br=0;
+  ArrayList<Cell> susjedi = grid[x][y].getNeighbours();
+  for(int k = 0; k < susjedi.size(); k++)
+  {
+    Cell susjed = susjedi.get(k);
+    if(susjed.zastavica)
+    {
+      br++;
+    }
+  }
+  return br;
 }
 
 /*void countMines()
