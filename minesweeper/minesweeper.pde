@@ -8,110 +8,61 @@ import java.util.ArrayList;
 int gameState = 1; // ovo promijeniti na 0 kad se ubaci pocetni izbornik
 
 int velicinaPolja = 25;
-int brojMina = 40;  
+int brojMina = 40;
+int brojPreostalihMina = 40;
 int cols, rows;
 boolean firstClick = false;
+
 
 Cell[][] grid;
 
 
 void setup() {
-  size(400, 400);
+  size(400, 450);
   
-  cols = width/velicinaPolja;
-  rows = height/velicinaPolja;
-  
-  grid = new Cell[rows][cols];  
-  for (int i = 0; i < rows; i++) 
+  if(gameState == 1 || gameState == 2)
   {
-    for (int j = 0; j < cols; j++) 
+    cols = width/velicinaPolja;
+    rows = height/velicinaPolja;
+  
+    grid = new Cell[rows][cols];  
+    for (int i = 0; i < rows; i++) 
     {
-      grid[i][j] = new Cell(i * velicinaPolja, j * velicinaPolja, velicinaPolja);
+      for (int j = 0; j < cols; j++) 
+      {
+        grid[i][j] = new Cell(i * velicinaPolja, 50 + j * velicinaPolja, velicinaPolja);
+      }
     }
   }
   
 }
 
 
-void set_mines(int rows,int cols, int x, int y)
-{
-  int[] a = new int[cols*rows];
-  for (int i = 0; i < a.length; i++)
-    a[i] = i;
-  
-  for (int i = 0; i < a.length; i++) {
-    int ridx = (int)random(0, a.length);
-    int temp = a[i];
-    a[i] = a[ridx];
-    a[ridx] = temp;
-  } 
-  
-  
-  int br = 0;
-  int k = 0;
- 
- while(true)
- {
-    if(!(grid[a[k]/cols][a[k]%cols].isChosen(x,y) || grid[a[k]/cols][a[k]%cols].isNeighbour(x,y))) 
-    { 
-      grid[a[k]/cols][a[k]%cols].mina=true; 
-      br++;  
-    }
-    
-    k++;
-    if(br >= brojMina) break;
- }    
-
-  
-     
-}
-
-
-//postavi brojeve svim celijama
-
-void set_numbers(int rows, int cols)
-{
-  for (int i = 0; i < rows; i++) 
-  {
-    for (int j = 0; j < cols; j++) 
-    {
-      grid[i][j].broj = neighbour_mines(i,j,rows,cols);
-    }
-  }  
-}
-
-//pomocna funkcija koja broji koliko ima susjednih mina neke celije
-
-int neighbour_mines(int i, int j, int r, int c)
-{
-  if(grid[i][j].mina)
-    return -1;
-  
-  int br = 0;
-  
-  if(i-1 >= 0 && j-1>=0)
-    if(grid[i-1][j-1].mina) br++;
-  if(i-1 >= 0)
-    if(grid[i-1][j].mina) br++; 
-  if(i-1 >= 0 && j+1<c)
-    if(grid[i-1][j+1].mina) br++;
-  if(j-1>=0)
-    if(grid[i][j-1].mina) br++;
-  if(j+1<c)
-    if(grid[i][j+1].mina) br++;
-  if(i+1<r && j-1>=0)
-    if(grid[i+1][j-1].mina) br++;
-  if(i+1<r)
-    if(grid[i+1][j].mina) br++; 
-  if(i+1<r && j+1<c)
-    if(grid[i+1][j+1].mina) br++;
-  return br;
-
-}
-
 void draw() {
   
   if(gameState == 1){
+    
+    PImage smile;
+    smile = loadImage("smile.png");
+    image(smile, 180, 7, 35, 35);
+    
+   
+    fill(0);
+    rect(7, 7, 70, 35);
+    fill(200,0,0);
+    textSize(25);
+    textAlign(LEFT);
+    text(str(brojPreostalihMina), 40, 35);
+    
+    //text("", 12.5, 12.5);
+    textAlign(CENTER,CENTER);
+    textSize(14);
+    
+    
+    
+    
+    
+    
     for (int i = 0; i < rows; i++) 
       for (int j = 0; j < cols; j++)
       {
@@ -154,9 +105,30 @@ void draw() {
 
 void mousePressed(){
   
+  // stisnut je smiley
+  if(mouseX > 180  &&  215 > mouseX
+          && mouseY < 42 && mouseY > 7)
+  {
+    gameState = 1;
+    firstClick = false;
+    cols = width/velicinaPolja;
+    rows = height/velicinaPolja;
+    brojPreostalihMina = brojMina;
+  
+    grid = new Cell[rows][cols];  
+    for (int i = 0; i < rows; i++) 
+    {
+      for (int j = 0; j < cols; j++) 
+      {
+        grid[i][j] = new Cell(i * velicinaPolja, 50 + j * velicinaPolja, velicinaPolja);
+      }
+    }
+    zvuk.stop();
+  }
+  
   if(gameState == 1)
   {
-    if(!firstClick)
+    if(!firstClick && mouseY >= 50)
     {
       firstClick = true;
       set_mines(rows, cols, mouseX, mouseY);
@@ -192,9 +164,16 @@ void mousePressed(){
                  && !grid[i][j].otvoreno)
           {
             if(grid[i][j].zastavica)
-             grid[i][j].zastavica = false;
+            {
+              grid[i][j].zastavica = false;
+              brojPreostalihMina++;
+            }
            
-             else grid[i][j].zastavica = true;
+             else 
+             {
+               grid[i][j].zastavica = true;
+               brojPreostalihMina--;
+             }
           }
           
           else if(grid[i][j].isChosen(mouseX, mouseY) && (mouseButton == CENTER)
@@ -296,6 +275,85 @@ int neighbour_flags(int x, int y)
     }
   }
   return br;
+}
+
+
+
+
+void set_mines(int rows,int cols, int x, int y)
+{
+  int[] a = new int[cols*rows];
+  for (int i = 0; i < a.length; i++)
+    a[i] = i;
+  
+  for (int i = 0; i < a.length; i++) {
+    int ridx = (int)random(0, a.length);
+    int temp = a[i];
+    a[i] = a[ridx];
+    a[ridx] = temp;
+  } 
+  
+  
+  int br = 0;
+  int k = 0;
+ 
+ while(true)
+ {
+    if(!(grid[a[k]/cols][a[k]%cols].isChosen(x,y) || grid[a[k]/cols][a[k]%cols].isNeighbour(x,y))) 
+    { 
+      grid[a[k]/cols][a[k]%cols].mina=true; 
+      br++;  
+    }
+    
+    k++;
+    if(br >= brojMina) break;
+ }    
+
+  
+     
+}
+
+
+//postavi brojeve svim celijama
+
+void set_numbers(int rows, int cols)
+{
+  for (int i = 0; i < rows; i++) 
+  {
+    for (int j = 0; j < cols; j++) 
+    {
+      grid[i][j].broj = neighbour_mines(i,j,rows,cols);
+    }
+  }  
+}
+
+//pomocna funkcija koja broji koliko ima susjednih mina neke celije
+
+int neighbour_mines(int i, int j, int r, int c)
+{
+  if(grid[i][j].mina)
+    return -1;
+  
+  int br = 0;
+  
+  if(i-1 >= 0 && j-1>=0)
+    if(grid[i-1][j-1].mina) br++;
+  if(i-1 >= 0)
+    if(grid[i-1][j].mina) br++; 
+  if(i-1 >= 0 && j+1<c)
+    if(grid[i-1][j+1].mina) br++;
+  if(j-1>=0)
+    if(grid[i][j-1].mina) br++;
+  if(j+1<c)
+    if(grid[i][j+1].mina) br++;
+  if(i+1<r && j-1>=0)
+    if(grid[i+1][j-1].mina) br++;
+  if(i+1<r)
+    if(grid[i+1][j].mina) br++; 
+  if(i+1<r && j+1<c)
+    if(grid[i+1][j+1].mina) br++;
+  return br;
+
 }
 
 /*void countMines()
