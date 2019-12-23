@@ -256,6 +256,31 @@ void mousePressed(){
       }
   }
   
+  else if(gameState == 2)
+  {
+    if(mouseX > 180  &&  mouseX < 215 && mouseY < 42 && mouseY > 7)
+    {
+      gameState = 1;
+      firstClick = false;
+      cols = width/velicinaPolja;
+      rows = height/velicinaPolja;
+      brojPreostalihMina = brojMina;
+      clockStarted = false;
+      clockAtStart = millis();
+      
+  
+      grid = new Cell[rows][cols];  
+      for (int i = 0; i < rows; i++) 
+      {
+        for (int j = 0; j < cols; j++) 
+        {
+          grid[i][j] = new Cell(i * velicinaPolja, 50 + j * velicinaPolja, velicinaPolja);
+        }
+       }
+       zvuk.stop();
+     }
+  }
+  
 }
 
 void open_neighbours(int x, int y)
