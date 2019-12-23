@@ -25,7 +25,6 @@ void setup() {
     
     cols = width/velicinaPolja;
     rows = (height-50)/velicinaPolja;
-    println(cols,rows);
   
     grid = new Cell[rows][cols];  
     for (int i = 0; i < rows; i++) 
@@ -70,16 +69,21 @@ void draw() {
   
   else if(gameState == 1){
     
-    /* OVO TREBA POPRAVITI
     if(difficulty == 2)
+    {
       surface.setSize(400, 450);
+    }
     
     else if(difficulty == 1)
+    {
       surface.setSize(225, 275);
+    }
     
     else if(difficulty == 3)
+    {
       surface.setSize(750, 450);
-    */
+    }
+    
     
     background(211,211,211);
     PImage smile;
@@ -284,8 +288,8 @@ void mousePressed(){
     {
       gameState = 1;
       firstClick = false;
-      cols = width/velicinaPolja;
-      rows = (height-50)/velicinaPolja;
+      //cols = width/velicinaPolja;
+      //rows = (height-50)/velicinaPolja;
       brojPreostalihMina = brojMina;
       clockStarted = false;
       clockAtStart = millis();
@@ -384,8 +388,8 @@ void mousePressed(){
     {
       gameState = 1;
       firstClick = false;
-      cols = width/velicinaPolja;
-      rows = (height-50)/velicinaPolja;
+      //cols = width/velicinaPolja;
+      //rows = (height-50)/velicinaPolja;
       brojPreostalihMina = brojMina;
       clockStarted = false;
       clockAtStart = millis();
@@ -421,10 +425,22 @@ void mousePressed(){
   else if(gameState == 5)
   {
     if(mouseX > 90 && mouseX < 340 && mouseY < 130 && mouseY > 50)
-     {
+    {
        difficulty = 1;
        brojMina = 16;
        brojPreostalihMina = brojMina;
+       
+       cols = 225/velicinaPolja;
+       rows = 225/velicinaPolja;
+    
+       grid = new Cell[rows][cols];  
+       for (int i = 0; i < rows; i++) 
+       {
+          for (int j = 0; j < cols; j++) 
+          {
+            grid[i][j] = new Cell(i * velicinaPolja, 50 + j * velicinaPolja, velicinaPolja);
+          }
+       }
      }
     
     else if(mouseX > 90 && mouseX < 340 && mouseY < 230 && mouseY > 150)
@@ -432,13 +448,37 @@ void mousePressed(){
       difficulty = 2;
       brojMina = 40;
       brojPreostalihMina = brojMina;
+      
+      cols = 400/velicinaPolja;
+      rows = 400/velicinaPolja;
+    
+      grid = new Cell[rows][cols];  
+      for (int i = 0; i < rows; i++) 
+      {
+          for (int j = 0; j < cols; j++) 
+          {
+            grid[i][j] = new Cell(i * velicinaPolja, 50 + j * velicinaPolja, velicinaPolja);
+          }
+      }
     }
     
     else if(mouseX > 90 && mouseX < 340 && mouseY < 330 && mouseY > 250)
-     {
+    {
        difficulty = 3;
-      brojMina = 99;
-      brojPreostalihMina = brojMina;
+       brojMina = 99;
+       brojPreostalihMina = brojMina;
+       
+       cols = 400/velicinaPolja;
+       rows = 750/velicinaPolja;
+    
+       grid = new Cell[rows][cols];  
+       for (int i = 0; i < rows; i++) 
+       {
+          for (int j = 0; j < cols; j++) 
+          {
+            grid[i][j] = new Cell(i * velicinaPolja, 50 + j * velicinaPolja, velicinaPolja);
+          }
+       }
      }
      
     else if(mouseX > 90 && mouseX < 340 && mouseY < 430 && mouseY > 350)
