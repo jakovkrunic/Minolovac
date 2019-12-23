@@ -138,13 +138,13 @@ void draw() {
     //textSize(50);
     //text("Game over", 200, 200);
   }
-  else if(gameState == 3)
+  /*else if(gameState == 3)
   {
     fill(255);
     textSize(25);
     textAlign(CENTER);
     text("You win", 200, 200);
-  }
+  }*/
 }
 
 void mousePressed(){
@@ -208,7 +208,11 @@ void mousePressed(){
       set_numbers();
       zvuk = new SoundFile(this, "pozadinski zvuk.mp3");
       zvuk.loop();
-      //countMines();  
+      //countMines(); 
+      /*if(win())
+      {
+        gameState=3;
+      }*/
     }
   
     for (int i = 0; i < rows; i++) 
@@ -232,10 +236,10 @@ void mousePressed(){
               if(grid[i][j].broj == 0)
                 open_neighbours(i, j);
               
-              if(win())
+              /*if(win())
               {
                 gameState=3;
-              }
+              }*/
               
             }
    
@@ -266,10 +270,10 @@ void mousePressed(){
                  && grid[i][j].otvoreno && neighbour_flags(i,j)==grid[i][j].broj)
           {
             open_closed_neighbours(i,j);
-            if(win())
+            /*if(win())
               {
                 gameState=3;
-              }
+              }*/
           }
 
       }
@@ -468,7 +472,7 @@ int neighbour_mines(int i, int j, int r, int c)
 }
 
 //funkcija koja nam otkriva je li sve zadovoljenu za pobjedu
-boolean win()
+/*boolean win()
 {
   int opened=0;
   for (int i = 0; i < rows; i++) 
@@ -484,7 +488,7 @@ boolean win()
     return true;
   else  
     return false;
-}
+}*/
 
 /*void countMines()
 {
