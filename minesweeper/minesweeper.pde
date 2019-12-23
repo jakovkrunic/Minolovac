@@ -6,7 +6,7 @@ import java.util.ArrayList;
 int gameState = 0; 
 
 int velicinaPolja = 25;
-int brojMina = 2;
+int brojMina = 40;
 int brojPreostalihMina = brojMina;
 int cols, rows;
 boolean firstClick = false;
