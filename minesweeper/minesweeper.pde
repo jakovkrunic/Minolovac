@@ -14,12 +14,15 @@ int cols, rows;
 boolean firstClick = false;
 int clock, clockAtStart;
 boolean clockStarted = false;
+int difficulty = 2;
+boolean bezZvuka = false;
 
 Cell[][] grid;
 
 
 void setup() {
-  size(400, 450);
+  
+    size(400, 450);
   
     cols = width/velicinaPolja;
     rows = height/velicinaPolja;
@@ -133,7 +136,7 @@ void draw() {
           image(mina,  grid[i][j].x+1,  grid[i][j].y+1,  grid[i][j].velicina-1,  grid[i][j].velicina-1);
         }
       }
-    zvuk.stop();
+      if(!bezZvuka) zvuk.stop();
     //fill(0);
     //textSize(50);
     //text("Game over", 200, 200);
@@ -145,6 +148,47 @@ void draw() {
     textAlign(CENTER);
     text("You win", 200, 200);
   }*/
+  
+  
+  
+  else if(gameState == 4)
+  {
+    background(211,211,211);
+    
+    if(!bezZvuka)
+    fill(0,152,0);
+    
+    else fill(152,152,152);
+    
+    rect(90,50,220,80);
+    fill(200,0,0);
+    textAlign(LEFT);
+    textSize(40);
+    text("Sound", 135, 100);
+    
+    
+    if(bezZvuka)
+    fill(0,152,0);
+    
+    else fill(152,152,152);
+    
+    rect(90,150,220,80);
+    fill(200,0,0);
+    textAlign(LEFT);
+    textSize(40);
+    text("No sound", 110, 200);
+    
+    fill(152,152,152);
+    rect(90,250,220,80);
+    fill(200,0,0);
+    textAlign(LEFT);
+    textSize(40);
+    text("Back", 150, 300);
+    
+    // mozda ubaciti igru pomocu tipkovnice
+  }
+  
+  
 }
 
 void mousePressed(){
@@ -154,20 +198,13 @@ void mousePressed(){
     if(mouseX > 90 && mouseX < 310 && mouseY < 130 && mouseY > 50)
       gameState = 1;
     
-    /*
-    fill(152,152,152);
-    rect(90,150,220,80);
-    fill(200,0,0);
-    textAlign(LEFT);
-    textSize(40);
-    text("Options", 120, 200);
     
-    fill(152,152,152);
-    rect(90,250,220,80);
-    fill(200,0,0);
-    textAlign(LEFT);
-    textSize(40);
-    text("Difficulty", 110, 300);*/
+    else if(mouseX > 90 && mouseX < 310 && mouseY < 230 && mouseY > 150)
+      gameState = 4;
+    
+    else if(mouseX > 90 && mouseX < 310 && mouseY < 330 && mouseY > 250)
+      gameState = 5;
+  
   }
   
  
@@ -195,7 +232,7 @@ void mousePressed(){
           grid[i][j] = new Cell(i * velicinaPolja, 50 + j * velicinaPolja, velicinaPolja);
         }
        }
-       if(zvuk!=null)
+       if(zvuk != null && !bezZvuka)
          zvuk.stop();
      }
     
@@ -206,8 +243,12 @@ void mousePressed(){
       firstClick = true;
       set_mines(mouseX, mouseY);
       set_numbers();
-      zvuk = new SoundFile(this, "pozadinski zvuk.mp3");
-      zvuk.loop();
+      
+      if(!bezZvuka)
+      {
+        zvuk = new SoundFile(this, "pozadinski zvuk.mp3");
+        zvuk.loop();
+      }
       //countMines(); 
       /*if(win())
       {
@@ -228,8 +269,11 @@ void mousePressed(){
               grid[i][j].pogodena = true;
               delay(200);
               gameState = 2;
-              eksplozija = new SoundFile(this, "eksplozija.mp3");
-              eksplozija.play();
+              if(!bezZvuka)
+              {
+                eksplozija = new SoundFile(this, "eksplozija.mp3");
+                eksplozija.play();
+              }
             }
             else
             {
@@ -301,8 +345,23 @@ void mousePressed(){
           grid[i][j] = new Cell(i * velicinaPolja, 50 + j * velicinaPolja, velicinaPolja);
         }
        }
-       zvuk.stop();
+       if(!bezZvuka)
+         zvuk.stop();
      }
+  }
+  
+  else if(gameState == 4)
+  {
+    if(mouseX > 90 && mouseX < 310 && mouseY < 130 && mouseY > 50)
+      bezZvuka = false;
+    
+    
+    else if(mouseX > 90 && mouseX < 310 && mouseY < 230 && mouseY > 150)
+      bezZvuka = true;
+    
+    else if(mouseX > 90 && mouseX < 310 && mouseY < 330 && mouseY > 250)
+      gameState = 0;
+    
   }
   
 }
@@ -371,8 +430,11 @@ void open_closed_neighbours(int x, int y)
   {
     delay(200);
     gameState = 2;
-    eksplozija = new SoundFile(this, "eksplozija.mp3");
-    eksplozija.play();
+    if(!bezZvuka)
+    {
+      eksplozija = new SoundFile(this, "eksplozija.mp3");
+      eksplozija.play();
+    }
   }
 }
 
