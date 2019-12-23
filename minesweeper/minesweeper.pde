@@ -1,11 +1,9 @@
-  
 import processing.sound.*;
 SoundFile zvuk,eksplozija;
 
 import java.util.ArrayList;
-//import java.util.List;
 
-int gameState = 0; // ovo promijeniti na 0 kad se ubaci pocetni izbornik
+int gameState = 0; 
 
 int velicinaPolja = 25;
 int brojMina = 40;
@@ -16,16 +14,18 @@ int clock, clockAtStart;
 boolean clockStarted = false;
 int difficulty = 2;
 boolean bezZvuka = false;
+int w, h;
 
 Cell[][] grid;
 
-
 void setup() {
-  
+      
     size(400, 450);
-  
+    surface.setResizable(true);
+    
     cols = width/velicinaPolja;
-    rows = height/velicinaPolja;
+    rows = (height-50)/velicinaPolja;
+    println(cols,rows);
   
     grid = new Cell[rows][cols];  
     for (int i = 0; i < rows; i++) 
@@ -35,15 +35,15 @@ void setup() {
         grid[i][j] = new Cell(i * velicinaPolja, 50 + j * velicinaPolja, velicinaPolja);
       }
     }
-  
-  
+   
 }
-
 
 void draw() {
   
   if(gameState == 0)
   {
+    background(211,211,211);
+    
     fill(152,152,152);
     rect(90,50,220,80);
     fill(200,0,0);
@@ -69,6 +69,18 @@ void draw() {
  
   
   else if(gameState == 1){
+    
+    /* OVO TREBA POPRAVITI
+    if(difficulty == 2)
+      surface.setSize(400, 450);
+    
+    else if(difficulty == 1)
+      surface.setSize(225, 275);
+    
+    else if(difficulty == 3)
+      surface.setSize(750, 450);
+    */
+    
     background(211,211,211);
     PImage smile;
     smile = loadImage("smile.png");
@@ -110,6 +122,10 @@ void draw() {
         if(grid[i][j].broj == 0 && grid[i][j].otvoreno)
           open_neighbours(i,j);
       }
+    if(win())
+    {
+       gameState=3;
+    }
   }
   
   else if(gameState == 2)
@@ -141,13 +157,16 @@ void draw() {
     //textSize(50);
     //text("Game over", 200, 200);
   }
-  /*else if(gameState == 3)
+  else if(gameState == 3)
   {
-    fill(255);
-    textSize(25);
-    textAlign(CENTER);
-    text("You win", 200, 200);
-  }*/
+    for (int i = 0; i < rows; i++) 
+      for (int j = 0; j < cols; j++)
+        grid[i][j].drawCell();
+    
+    fill(0);
+    text("YOU WON", 255,25);
+    zvuk.stop();
+  }
   
   
   
@@ -189,6 +208,57 @@ void draw() {
   }
   
   
+  else if(gameState == 5)
+  {
+    background(211,211,211);
+    
+    if(difficulty == 1)
+    fill(0,152,0);
+    
+    else fill(152,152,152);
+    
+    rect(90,50,250,80);
+    fill(200,0,0);
+    textAlign(LEFT);
+    textSize(40);
+    text("Begginer", 130, 100);
+    
+    
+    if(difficulty == 2)
+    fill(0,152,0);
+    
+    else fill(152,152,152);
+    
+    rect(90,150,250,80);
+    fill(200,0,0);
+    textAlign(LEFT);
+    textSize(40);
+    text("Intermediate", 95, 200);
+    
+    if(difficulty == 3)
+    fill(0,152,0);
+    
+    else fill(152,152,152);
+    
+    rect(90,250,250,80);
+    fill(200,0,0);
+    textAlign(LEFT);
+    textSize(40);
+    text("Expert", 150, 300);
+    
+    
+    
+    fill(152,152,152);
+    rect(90,350,250,80);
+    fill(200,0,0);
+    textAlign(LEFT);
+    textSize(40);
+    text("Back", 165, 400);
+    
+    // mozda ubaciti igru pomocu tipkovnice
+  }
+  
+  
 }
 
 void mousePressed(){
@@ -206,24 +276,20 @@ void mousePressed(){
       gameState = 5;
   
   }
-  
- 
-  
-  else if(gameState == 1)
-  {
     
+  else if(gameState == 1)
+  {     
      // stisnut je smiley
     if(mouseX > 180  &&  mouseX < 215 && mouseY < 42 && mouseY > 7)
     {
       gameState = 1;
       firstClick = false;
       cols = width/velicinaPolja;
-      rows = height/velicinaPolja;
+      rows = (height-50)/velicinaPolja;
       brojPreostalihMina = brojMina;
       clockStarted = false;
       clockAtStart = millis();
       
-  
       grid = new Cell[rows][cols];  
       for (int i = 0; i < rows; i++) 
       {
@@ -249,11 +315,7 @@ void mousePressed(){
         zvuk = new SoundFile(this, "pozadinski zvuk.mp3");
         zvuk.loop();
       }
-      //countMines(); 
-      /*if(win())
-      {
-        gameState=3;
-      }*/
+      
     }
   
     for (int i = 0; i < rows; i++) 
@@ -279,11 +341,6 @@ void mousePressed(){
             {
               if(grid[i][j].broj == 0)
                 open_neighbours(i, j);
-              
-              /*if(win())
-              {
-                gameState=3;
-              }*/
               
             }
    
@@ -314,24 +371,21 @@ void mousePressed(){
                  && grid[i][j].otvoreno && neighbour_flags(i,j)==grid[i][j].broj)
           {
             open_closed_neighbours(i,j);
-            /*if(win())
-              {
-                gameState=3;
-              }*/
+
           }
 
       }
-    
+
   }
   
-  else if(gameState == 2)
+  else if(gameState == 2 || gameState == 3)
   {
     if(mouseX > 180  &&  mouseX < 215 && mouseY < 42 && mouseY > 7)
     {
       gameState = 1;
       firstClick = false;
       cols = width/velicinaPolja;
-      rows = height/velicinaPolja;
+      rows = (height-50)/velicinaPolja;
       brojPreostalihMina = brojMina;
       clockStarted = false;
       clockAtStart = millis();
@@ -362,6 +416,33 @@ void mousePressed(){
     else if(mouseX > 90 && mouseX < 310 && mouseY < 330 && mouseY > 250)
       gameState = 0;
     
+  }
+  
+  else if(gameState == 5)
+  {
+    if(mouseX > 90 && mouseX < 340 && mouseY < 130 && mouseY > 50)
+     {
+       difficulty = 1;
+       brojMina = 16;
+       brojPreostalihMina = brojMina;
+     }
+    
+    else if(mouseX > 90 && mouseX < 340 && mouseY < 230 && mouseY > 150)
+    { 
+      difficulty = 2;
+      brojMina = 40;
+      brojPreostalihMina = brojMina;
+    }
+    
+    else if(mouseX > 90 && mouseX < 340 && mouseY < 330 && mouseY > 250)
+     {
+       difficulty = 3;
+      brojMina = 99;
+      brojPreostalihMina = brojMina;
+     }
+     
+    else if(mouseX > 90 && mouseX < 340 && mouseY < 430 && mouseY > 350)
+      gameState = 0;
   }
   
 }
@@ -534,7 +615,7 @@ int neighbour_mines(int i, int j, int r, int c)
 }
 
 //funkcija koja nam otkriva je li sve zadovoljenu za pobjedu
-/*boolean win()
+boolean win()
 {
   int opened=0;
   for (int i = 0; i < rows; i++) 
@@ -550,7 +631,7 @@ int neighbour_mines(int i, int j, int r, int c)
     return true;
   else  
     return false;
-}*/
+}
 
 /*void countMines()
 {
