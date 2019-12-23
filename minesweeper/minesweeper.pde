@@ -5,14 +5,15 @@ SoundFile zvuk,eksplozija;
 import java.util.ArrayList;
 //import java.util.List;
 
-int gameState = 1; // ovo promijeniti na 0 kad se ubaci pocetni izbornik
+int gameState = 0; // ovo promijeniti na 0 kad se ubaci pocetni izbornik
 
 int velicinaPolja = 25;
 int brojMina = 40;
 int brojPreostalihMina = 40;
 int cols, rows;
 boolean firstClick = false;
-
+int clock, clockAtStart;
+boolean clockStarted = false;
 
 Cell[][] grid;
 
@@ -20,8 +21,6 @@ Cell[][] grid;
 void setup() {
   size(400, 450);
   
-  if(gameState == 1 || gameState == 2)
-  {
     cols = width/velicinaPolja;
     rows = height/velicinaPolja;
   
@@ -33,14 +32,40 @@ void setup() {
         grid[i][j] = new Cell(i * velicinaPolja, 50 + j * velicinaPolja, velicinaPolja);
       }
     }
-  }
+  
   
 }
 
 
 void draw() {
   
-  if(gameState == 1){
+  if(gameState == 0)
+  {
+    fill(152,152,152);
+    rect(90,50,220,80);
+    fill(200,0,0);
+    textAlign(LEFT);
+    textSize(40);
+    text("New game", 100, 100);
+    
+    
+    fill(152,152,152);
+    rect(90,150,220,80);
+    fill(200,0,0);
+    textAlign(LEFT);
+    textSize(40);
+    text("Options", 120, 200);
+    
+    fill(152,152,152);
+    rect(90,250,220,80);
+    fill(200,0,0);
+    textAlign(LEFT);
+    textSize(40);
+    text("Difficulty", 110, 300);
+  }
+ 
+  
+  else if(gameState == 1){
     
     PImage smile;
     smile = loadImage("smile.png");
@@ -54,7 +79,20 @@ void draw() {
     textAlign(LEFT);
     text(str(brojPreostalihMina), 40, 35);
     
-    //text("", 12.5, 12.5);
+    
+    if(clockStarted)
+      clock = millis();
+    
+   
+    fill(0);
+    rect(323, 7, 70, 35);
+    fill(200,0,0);
+    textSize(25);
+    textAlign(LEFT);
+    text(str((clock-clockAtStart)/1000), 343, 35);
+    println(clock);
+    
+    
     textAlign(CENTER,CENTER);
     textSize(14);
     
@@ -105,31 +143,59 @@ void draw() {
 
 void mousePressed(){
   
-  // stisnut je smiley
-  if(mouseX > 180  &&  215 > mouseX
-          && mouseY < 42 && mouseY > 7)
+  if(gameState == 0)
   {
-    gameState = 1;
-    firstClick = false;
-    cols = width/velicinaPolja;
-    rows = height/velicinaPolja;
-    brojPreostalihMina = brojMina;
-  
-    grid = new Cell[rows][cols];  
-    for (int i = 0; i < rows; i++) 
-    {
-      for (int j = 0; j < cols; j++) 
-      {
-        grid[i][j] = new Cell(i * velicinaPolja, 50 + j * velicinaPolja, velicinaPolja);
-      }
-    }
-    zvuk.stop();
+    if(mouseX > 90 && mouseX < 310 && mouseY < 130 && mouseY > 50)
+      gameState = 1;
+    
+    /*
+    fill(152,152,152);
+    rect(90,150,220,80);
+    fill(200,0,0);
+    textAlign(LEFT);
+    textSize(40);
+    text("Options", 120, 200);
+    
+    fill(152,152,152);
+    rect(90,250,220,80);
+    fill(200,0,0);
+    textAlign(LEFT);
+    textSize(40);
+    text("Difficulty", 110, 300);*/
   }
   
-  if(gameState == 1)
+ 
+  
+  else if(gameState == 1)
   {
+    
+     // stisnut je smiley
+    if(mouseX > 180  &&  mouseX < 215 && mouseY < 42 && mouseY > 7)
+    {
+      gameState = 1;
+      firstClick = false;
+      cols = width/velicinaPolja;
+      rows = height/velicinaPolja;
+      brojPreostalihMina = brojMina;
+      clockStarted = false;
+      clockAtStart = millis();
+      
+  
+      grid = new Cell[rows][cols];  
+      for (int i = 0; i < rows; i++) 
+      {
+        for (int j = 0; j < cols; j++) 
+        {
+          grid[i][j] = new Cell(i * velicinaPolja, 50 + j * velicinaPolja, velicinaPolja);
+        }
+       }
+       zvuk.stop();
+     }
+    
     if(!firstClick && mouseY >= 50)
     {
+      clockStarted = true;
+      clockAtStart = millis();
       firstClick = true;
       set_mines(rows, cols, mouseX, mouseY);
       set_numbers(rows, cols);
