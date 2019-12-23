@@ -99,11 +99,7 @@ void draw() {
     textAlign(CENTER,CENTER);
     textSize(14);
     
-    
-    
-    
-    
-    
+      
     for (int i = 0; i < rows; i++) 
       for (int j = 0; j < cols; j++)
       {
@@ -141,6 +137,13 @@ void draw() {
     //fill(0);
     //textSize(50);
     //text("Game over", 200, 200);
+  }
+  else if(gameState == 3)
+  {
+    fill(255);
+    textSize(25);
+    textAlign(CENTER);
+    text("You win", 200, 200);
   }
 }
 
@@ -201,8 +204,8 @@ void mousePressed(){
       clockStarted = true;
       clockAtStart = millis();
       firstClick = true;
-      set_mines(rows, cols, mouseX, mouseY);
-      set_numbers(rows, cols);
+      set_mines(mouseX, mouseY);
+      set_numbers();
       zvuk = new SoundFile(this, "pozadinski zvuk.mp3");
       zvuk.loop();
       //countMines();  
@@ -224,9 +227,17 @@ void mousePressed(){
               eksplozija = new SoundFile(this, "eksplozija.mp3");
               eksplozija.play();
             }
-            
-            if(grid[i][j].broj == 0)
-              open_neighbours(i, j);
+            else
+            {
+              if(grid[i][j].broj == 0)
+                open_neighbours(i, j);
+              
+              if(win())
+              {
+                gameState=3;
+              }
+              
+            }
    
           }
         
@@ -255,9 +266,14 @@ void mousePressed(){
                  && grid[i][j].otvoreno && neighbour_flags(i,j)==grid[i][j].broj)
           {
             open_closed_neighbours(i,j);
+            if(win())
+              {
+                gameState=3;
+              }
           }
 
       }
+    
   }
   
   else if(gameState == 2)
@@ -375,7 +391,7 @@ int neighbour_flags(int x, int y)
 
 
 
-void set_mines(int rows,int cols, int x, int y)
+void set_mines(int x, int y)
 {
   int[] a = new int[cols*rows];
   for (int i = 0; i < a.length; i++)
@@ -411,7 +427,7 @@ void set_mines(int rows,int cols, int x, int y)
 
 //postavi brojeve svim celijama
 
-void set_numbers(int rows, int cols)
+void set_numbers()
 {
   for (int i = 0; i < rows; i++) 
   {
@@ -449,6 +465,25 @@ int neighbour_mines(int i, int j, int r, int c)
     if(grid[i+1][j+1].mina) br++;
   return br;
 
+}
+
+//funkcija koja nam otkriva je li sve zadovoljenu za pobjedu
+boolean win()
+{
+  int opened=0;
+  for (int i = 0; i < rows; i++) 
+  {
+    for (int j = 0; j < cols; j++) 
+    {
+      if(grid[i][j].otvoreno)
+        opened++;
+    }
+  }
+  
+  if(opened==(rows*cols-brojMina))
+    return true;
+  else  
+    return false;
 }
 
 /*void countMines()
