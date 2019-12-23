@@ -9,7 +9,7 @@ int gameState = 0; // ovo promijeniti na 0 kad se ubaci pocetni izbornik
 
 int velicinaPolja = 25;
 int brojMina = 40;
-int brojPreostalihMina = 40;
+int brojPreostalihMina = brojMina;
 int cols, rows;
 boolean firstClick = false;
 int clock, clockAtStart;
@@ -66,7 +66,7 @@ void draw() {
  
   
   else if(gameState == 1){
-    
+    background(211,211,211);
     PImage smile;
     smile = loadImage("smile.png");
     image(smile, 180, 7, 35, 35);
@@ -89,8 +89,11 @@ void draw() {
     fill(200,0,0);
     textSize(25);
     textAlign(LEFT);
-    text(str((clock-clockAtStart)/1000), 343, 35);
-    println(clock);
+    if((clock-clockAtStart)/1000 >=0)
+      text(str((clock-clockAtStart)/1000), 343, 35);
+    else
+      text(str(0),343,35);
+    //println(clock);
     
     
     textAlign(CENTER,CENTER);
@@ -189,7 +192,8 @@ void mousePressed(){
           grid[i][j] = new Cell(i * velicinaPolja, 50 + j * velicinaPolja, velicinaPolja);
         }
        }
-       zvuk.stop();
+       if(zvuk!=null)
+         zvuk.stop();
      }
     
     if(!firstClick && mouseY >= 50)
