@@ -6,7 +6,7 @@ import java.util.ArrayList;
 int gameState = 0; 
 
 int velicinaPolja = 25;
-int brojMina = 40;
+int brojMina = 2;
 int brojPreostalihMina = brojMina;
 int cols, rows;
 boolean firstClick = false;
@@ -664,6 +664,19 @@ boolean win()
     {
       if(grid[i][j].otvoreno)
         opened++;
+    }
+  }
+  if(opened==(rows*cols-brojMina))
+  {
+    for (int i = 0; i < rows; i++) 
+    {
+      for (int j = 0; j < cols; j++) 
+      {
+        if(!grid[i][j].otvoreno && !grid[i][j].zastavica)
+        {
+          grid[i][j].zastavica=true;
+        }
+      }
     }
   }
   
