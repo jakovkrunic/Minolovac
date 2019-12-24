@@ -15,6 +15,7 @@ boolean clockStarted = false;
 int difficulty = 2;
 boolean bezZvuka = false;
 int w, h;
+int smile_x=180,timer_x=343;
 
 Cell[][] grid;
 
@@ -72,23 +73,26 @@ void draw() {
     if(difficulty == 2)
     {
       surface.setSize(400, 450);
+      smile_x=180; timer_x=343;
     }
     
     else if(difficulty == 1)
     {
       surface.setSize(225, 275);
+      smile_x = 97; timer_x = 180;
     }
     
     else if(difficulty == 3)
     {
       surface.setSize(750, 450);
+      smile_x=340; timer_x = 700;
     }
     
     
     background(211,211,211);
     PImage smile;
     smile = loadImage("smile.png");
-    image(smile, 180, 7, 35, 35);
+    image(smile, smile_x, 7, 35, 35);
     
    
     fill(0);
@@ -104,14 +108,19 @@ void draw() {
     
    
     fill(0);
-    rect(323, 7, 70, 35);
+    if(difficulty==3)
+      rect(670, 7, 70, 35);
+    else if(difficulty==2)
+      rect(323, 7, 70, 35);
+    else if(difficulty==1)
+      rect(150, 7, 70, 35);
     fill(200,0,0);
     textSize(25);
     textAlign(LEFT);
     if((clock-clockAtStart)/1000 >=0)
-      text(str((clock-clockAtStart)/1000), 343, 35);
+      text(str((clock-clockAtStart)/1000), timer_x, 35);
     else
-      text(str(0),343,35);
+      text(str(0),timer_x,35);
     //println(clock);
     
     
@@ -168,7 +177,7 @@ void draw() {
         grid[i][j].drawCell();
     
     fill(0);
-    text("YOU WON", 255,25);
+    text("YOU WON", width/2,height/2);
     zvuk.stop();
   }
   
@@ -179,7 +188,7 @@ void draw() {
     background(211,211,211);
     
     if(!bezZvuka)
-    fill(0,152,0);
+      fill(0,152,0);
     
     else fill(152,152,152);
     
@@ -191,7 +200,7 @@ void draw() {
     
     
     if(bezZvuka)
-    fill(0,152,0);
+      fill(0,152,0);
     
     else fill(152,152,152);
     
@@ -217,7 +226,7 @@ void draw() {
     background(211,211,211);
     
     if(difficulty == 1)
-    fill(0,152,0);
+      fill(0,152,0);
     
     else fill(152,152,152);
     
@@ -229,7 +238,7 @@ void draw() {
     
     
     if(difficulty == 2)
-    fill(0,152,0);
+      fill(0,152,0);
     
     else fill(152,152,152);
     
@@ -240,7 +249,7 @@ void draw() {
     text("Intermediate", 95, 200);
     
     if(difficulty == 3)
-    fill(0,152,0);
+      fill(0,152,0);
     
     else fill(152,152,152);
     
@@ -284,7 +293,7 @@ void mousePressed(){
   else if(gameState == 1)
   {     
      // stisnut je smiley
-    if(mouseX > 180  &&  mouseX < 215 && mouseY < 42 && mouseY > 7)
+    if(mouseX > smile_x  &&  mouseX < smile_x+35 && mouseY < 42 && mouseY > 7 )
     {
       gameState = 1;
       firstClick = false;
@@ -384,7 +393,7 @@ void mousePressed(){
   
   else if(gameState == 2 || gameState == 3)
   {
-    if(mouseX > 180  &&  mouseX < 215 && mouseY < 42 && mouseY > 7)
+    if(mouseX > smile_x  &&  mouseX < smile_x+35 && mouseY < 42 && mouseY > 7)
     {
       gameState = 1;
       firstClick = false;
@@ -394,7 +403,6 @@ void mousePressed(){
       clockStarted = false;
       clockAtStart = millis();
       
-  
       grid = new Cell[rows][cols];  
       for (int i = 0; i < rows; i++) 
       {
