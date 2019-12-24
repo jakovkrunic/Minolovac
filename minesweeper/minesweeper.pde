@@ -18,7 +18,7 @@ int gameState = izbornik;
 
 
 int velicinaPolja = 25;
-int brojMina = 3;
+int brojMina = 40;
 int brojPreostalihMina = brojMina;
 int cols, rows;
 boolean firstClick = false;
