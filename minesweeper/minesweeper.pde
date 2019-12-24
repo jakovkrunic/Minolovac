@@ -1,5 +1,5 @@
 import processing.sound.*;
-SoundFile zvuk,eksplozija;
+SoundFile zvuk,eksplozija,pobjednicki_zvuk;
 
 import java.util.ArrayList;
 
@@ -155,8 +155,10 @@ void draw() {
     fill(180,0,0);
     textSize(25);
     textAlign(LEFT);
-    if((clock-clockAtStart)/1000 >=0)
+    if((clock-clockAtStart)/1000 >=0 && (clock-clockAtStart)/1000 <= 999)
       text(str((clock-clockAtStart)/1000), timer_x, 35);
+    else if((clock-clockAtStart)/1000 > 999)
+      text(str(999), timer_x, 35);
     else
       text(str(0),timer_x,35);
     //println(clock);
@@ -176,6 +178,11 @@ void draw() {
     if(win())
     {
        gameState = gameWon;
+       if(!bezZvuka)
+       {
+          pobjednicki_zvuk = new SoundFile(this, "pobjednicki_zvuk.mp3");
+          pobjednicki_zvuk.play();
+       }
     }
   }
   
