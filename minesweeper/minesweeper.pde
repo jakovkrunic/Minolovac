@@ -10,6 +10,10 @@ final int gameWon = 3;
 final int options = 4;
 final int tezina = 5;
 
+int r = 211;
+int g = 211;
+int b = 211;
+
 int gameState = izbornik; 
 
 
@@ -22,6 +26,7 @@ int clock, clockAtStart;
 boolean clockStarted = false;
 int difficulty = 2;
 boolean bezZvuka = false;
+boolean lightsOn = true;
 int w, h;
 int smile_x=180,timer_x=343;
 
@@ -50,26 +55,28 @@ void draw() {
   
   if(gameState == izbornik)
   {
-    background(211,211,211);
     
-    fill(152,152,152);
+    background(r,g,b);
+    
+    fill(r,g,b);
+    stroke(r,g,b);
     rect(90,50,220,80);
-    fill(200,0,0);
+    fill(100,0,0);
     textAlign(LEFT);
     textSize(40);
     text("New game", 100, 100);
     
     
-    fill(152,152,152);
+    fill(r,g,b);
     rect(90,150,220,80);
-    fill(200,0,0);
+    fill(100,0,0);
     textAlign(LEFT);
     textSize(40);
     text("Options", 120, 200);
     
-    fill(152,152,152);
+    fill(r,g,b);
     rect(90,250,220,80);
-    fill(200,0,0);
+    fill(100,0,0);
     textAlign(LEFT);
     textSize(40);
     text("Difficulty", 110, 300);
@@ -97,7 +104,7 @@ void draw() {
     }
     
     
-    background(211,211,211);
+    background(r,g,b);
     PImage smile;
     smile = loadImage("smile.png");
     image(smile, smile_x, 7, 35, 35);
@@ -105,7 +112,7 @@ void draw() {
    
     fill(0);
     rect(7, 7, 70, 35);
-    fill(200,0,0);
+    fill(100,0,0);
     textSize(25);
     textAlign(LEFT);
     text(str(brojPreostalihMina), 40, 35);
@@ -122,7 +129,7 @@ void draw() {
       rect(323, 7, 70, 35);
     else if(difficulty==1)
       rect(150, 7, 70, 35);
-    fill(200,0,0);
+    fill(100,0,0);
     textSize(25);
     textAlign(LEFT);
     if((clock-clockAtStart)/1000 >=0)
@@ -151,6 +158,11 @@ void draw() {
   
   else if(gameState == gameLost)
   {
+    
+    PImage smile;
+    smile = loadImage("sad_smiley.png");
+    image(smile, smile_x, 7, 35, 35);
+    
     for (int i = 0; i < rows; i++) 
       for (int j = 0; j < cols; j++)
       {
@@ -180,6 +192,10 @@ void draw() {
   }
   else if(gameState == gameWon)
   {
+    PImage smile;
+    smile = loadImage("boss_smiley.jpg");
+    image(smile, smile_x, 7, 35, 35);
+    
     for (int i = 0; i < rows; i++) 
       for (int j = 0; j < cols; j++)
         grid[i][j].drawCell();
@@ -193,37 +209,47 @@ void draw() {
   
   else if(gameState == options)
   {
-    background(211,211,211);
+    background(r,g,b);
     
     if(!bezZvuka)
       fill(0,152,0);
     
-    else fill(152,152,152);
+    else fill(0,152,152);
     
     rect(90,50,220,80);
-    fill(200,0,0);
+    fill(100,0,0);
     textAlign(LEFT);
     textSize(40);
-    text("Sound", 135, 100);
     
+    if(!bezZvuka)
+      text("Sound on", 110, 100);
     
-    if(bezZvuka)
-      fill(0,152,0);
+    else text("Sound off", 110, 100);
     
-    else fill(152,152,152);
+    if(!lightsOn)
+      fill(0,152,152);
+    
+    else fill(0,152,0);
     
     rect(90,150,220,80);
-    fill(200,0,0);
+    fill(100,0,0);
     textAlign(LEFT);
     textSize(40);
-    text("No sound", 110, 200);
     
-    fill(152,152,152);
+    if(!lightsOn)
+      text("Lights off", 110, 200);
+    
+    else text("Lights on", 110, 200); 
+    
+   
+    fill(r,g,b); 
     rect(90,250,220,80);
-    fill(200,0,0);
+    fill(100,0,0);
     textAlign(LEFT);
     textSize(40);
     text("Back", 150, 300);
+    
+    
     
     // mozda ubaciti igru pomocu tipkovnice
   }
@@ -231,15 +257,15 @@ void draw() {
   
   else if(gameState == tezina)
   {
-    background(211,211,211);
+    background(r,g,b);
     
     if(difficulty == 1)
       fill(0,152,0);
     
-    else fill(152,152,152);
+    else fill(r,g,b);
     
     rect(90,50,250,80);
-    fill(200,0,0);
+    fill(100,0,0);
     textAlign(LEFT);
     textSize(40);
     text("Begginer", 130, 100);
@@ -248,10 +274,10 @@ void draw() {
     if(difficulty == 2)
       fill(0,152,0);
     
-    else fill(152,152,152);
+    else fill(r,g,b);
     
     rect(90,150,250,80);
-    fill(200,0,0);
+    fill(100,0,0);
     textAlign(LEFT);
     textSize(40);
     text("Intermediate", 95, 200);
@@ -259,19 +285,19 @@ void draw() {
     if(difficulty == 3)
       fill(0,152,0);
     
-    else fill(152,152,152);
+    else fill(r,g,b);
     
     rect(90,250,250,80);
-    fill(200,0,0);
+    fill(100,0,0);
     textAlign(LEFT);
     textSize(40);
     text("Expert", 150, 300);
     
     
     
-    fill(152,152,152);
+    fill(r,g,b);
     rect(90,350,250,80);
-    fill(200,0,0);
+    fill(100,0,0);
     textAlign(LEFT);
     textSize(40);
     text("Back", 165, 400);
@@ -345,6 +371,10 @@ void mousePressed(){
           if(grid[i][j].isChosen(mouseX, mouseY) && (mouseButton == LEFT)
            && !grid[i][j].zastavica && !grid[i][j].otvoreno)
           {
+            PImage smile;
+            smile = loadImage("smiley_bj.png");
+            image(smile, smile_x, 7, 35, 35);
+    
             grid[i][j].otvoreno = true;
             
             if(grid[i][j].mina)
@@ -427,11 +457,24 @@ void mousePressed(){
   else if(gameState == options)
   {
     if(mouseX > 90 && mouseX < 310 && mouseY < 130 && mouseY > 50)
-      bezZvuka = false;
-    
+    {
+      if(bezZvuka) bezZvuka = false;
+      else bezZvuka = true;
+    }
     
     else if(mouseX > 90 && mouseX < 310 && mouseY < 230 && mouseY > 150)
-      bezZvuka = true;
+    {
+      if(lightsOn) 
+      {
+        lightsOn = false;
+        r = g = b = 63;
+      }
+      else 
+      {
+        lightsOn = true;
+        r = g = b = 211;
+      }
+    }
     
     else if(mouseX > 90 && mouseX < 310 && mouseY < 330 && mouseY > 250)
       gameState = izbornik;
