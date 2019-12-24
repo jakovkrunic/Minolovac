@@ -218,7 +218,7 @@ void draw() {
     
     fill(0);
     text("YOU WON", width/2,height/2);
-    zvuk.stop();
+    if(!bezZvuka) zvuk.stop();
   }
    
   else if(gameState == options)
