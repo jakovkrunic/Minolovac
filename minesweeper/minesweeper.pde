@@ -30,6 +30,9 @@ boolean lightsOn = true;
 int w, h;
 int smile_x=180,timer_x=343;
 
+color lightHighlight = color(150,150,150), darkHighlight = color(90);
+color greenHighlight = color(0,180,0), lightBlueHighlight = color(0,180,180);
+
 Cell[][] grid;
 
 void setup() {
@@ -57,8 +60,16 @@ void draw() {
   {
     
     background(r,g,b);
-    
     fill(r,g,b);
+    
+    if(mouseX > 90 && mouseX < 310 && mouseY < 130 && mouseY > 50 && lightsOn)
+      fill(lightHighlight);
+    
+    else if(mouseX > 90 && mouseX < 310 && mouseY < 130 && mouseY > 50 && !lightsOn)
+      fill(darkHighlight);
+     
+ 
+    
     stroke(r,g,b);
     rect(90,50,220,80);
     fill(100,0,0);
@@ -68,13 +79,25 @@ void draw() {
     
     
     fill(r,g,b);
+    if(mouseX > 90 && mouseX < 310 && mouseY < 230 && mouseY > 150 && lightsOn)
+      fill(lightHighlight);
+    
+    else if(mouseX > 90 && mouseX < 310 && mouseY < 230 && mouseY > 150 && !lightsOn)
+      fill(darkHighlight);
+    
     rect(90,150,220,80);
     fill(100,0,0);
     textAlign(LEFT);
     textSize(40);
     text("Options", 120, 200);
-    
+
     fill(r,g,b);
+    if(mouseX > 90 && mouseX < 310 && mouseY < 330 && mouseY > 250 && lightsOn)
+      fill(lightHighlight);
+    
+    else if(mouseX > 90 && mouseX < 310 && mouseY < 330 && mouseY > 250 && !lightsOn)
+      fill(darkHighlight);
+  
     rect(90,250,220,80);
     fill(100,0,0);
     textAlign(LEFT);
@@ -112,7 +135,7 @@ void draw() {
    
     fill(0);
     rect(7, 7, 70, 35);
-    fill(100,0,0);
+    fill(180,0,0);
     textSize(25);
     textAlign(LEFT);
     text(str(brojPreostalihMina), 40, 35);
@@ -129,7 +152,7 @@ void draw() {
       rect(323, 7, 70, 35);
     else if(difficulty==1)
       rect(150, 7, 70, 35);
-    fill(100,0,0);
+    fill(180,0,0);
     textSize(25);
     textAlign(LEFT);
     if((clock-clockAtStart)/1000 >=0)
@@ -212,9 +235,19 @@ void draw() {
     background(r,g,b);
     
     if(!bezZvuka)
+    {
       fill(0,152,0);
+      if(mouseX > 90 && mouseX < 310 && mouseY < 130 && mouseY > 50)
+        fill(greenHighlight);
+    }
     
-    else fill(0,152,152);
+    else 
+    {
+      fill(0,152,152);
+      if(mouseX > 90 && mouseX < 310 && mouseY < 130 && mouseY > 50)
+        fill(lightBlueHighlight);
+
+    }
     
     rect(90,50,220,80);
     fill(100,0,0);
@@ -226,10 +259,19 @@ void draw() {
     
     else text("Sound off", 110, 100);
     
-    if(!lightsOn)
-      fill(0,152,152);
+    if(lightsOn)
+    {
+      fill(0,152,0);
+      if(mouseX > 90 && mouseX < 310 && mouseY < 230 && mouseY > 150)
+        fill(greenHighlight);
+    }
     
-    else fill(0,152,0);
+    else
+    {
+      fill(0,152,152);
+      if(mouseX > 90 && mouseX < 310 && mouseY < 230 && mouseY > 150)
+        fill(lightBlueHighlight);
+    }
     
     rect(90,150,220,80);
     fill(100,0,0);
@@ -243,6 +285,13 @@ void draw() {
     
    
     fill(r,g,b); 
+    
+    if(mouseX > 90 && mouseX < 310 && mouseY < 330 && mouseY > 250 && lightsOn)
+      fill(lightHighlight);
+    
+    else if(mouseX > 90 && mouseX < 310 && mouseY < 330 && mouseY > 250 && !lightsOn)
+      fill(darkHighlight);
+      
     rect(90,250,220,80);
     fill(100,0,0);
     textAlign(LEFT);
@@ -260,9 +309,25 @@ void draw() {
     background(r,g,b);
     
     if(difficulty == 1)
+    {
       fill(0,152,0);
+      if(mouseX > 90 && mouseX < 310 && mouseY < 130 && mouseY > 50)
+        fill(greenHighlight);
+    }
     
-    else fill(r,g,b);
+    else if(lightsOn) 
+    {
+      fill(r,g,b);
+      if(mouseX > 90 && mouseX < 310 && mouseY < 130 && mouseY > 50)
+        fill(lightHighlight);
+    }
+    
+    else if(!lightsOn) 
+    {
+      fill(r,g,b);
+      if(mouseX > 90 && mouseX < 310 && mouseY < 130 && mouseY > 50)
+        fill(darkHighlight);
+    }
     
     rect(90,50,250,80);
     fill(100,0,0);
@@ -272,9 +337,25 @@ void draw() {
     
     
     if(difficulty == 2)
+    {
       fill(0,152,0);
+      if(mouseX > 90 && mouseX < 310 && mouseY < 230 && mouseY > 150)
+        fill(greenHighlight);
+    }
     
-    else fill(r,g,b);
+    else if(lightsOn) 
+    {
+      fill(r,g,b);
+      if(mouseX > 90 && mouseX < 310 && mouseY < 230 && mouseY > 150)
+        fill(lightHighlight);
+    }
+    
+    else if(!lightsOn) 
+    {
+      fill(r,g,b);
+      if(mouseX > 90 && mouseX < 310 && mouseY < 230 && mouseY > 150)
+        fill(darkHighlight);
+    }
     
     rect(90,150,250,80);
     fill(100,0,0);
@@ -283,9 +364,25 @@ void draw() {
     text("Intermediate", 95, 200);
     
     if(difficulty == 3)
+    {
       fill(0,152,0);
+      if(mouseX > 90 && mouseX < 310 && mouseY < 330 && mouseY > 250)
+        fill(greenHighlight);
+    }
     
-    else fill(r,g,b);
+    else if(lightsOn) 
+    {
+      fill(r,g,b);
+      if(mouseX > 90 && mouseX < 310 && mouseY < 330 && mouseY > 250)
+        fill(lightHighlight);
+    }
+    
+    else if(!lightsOn) 
+    {
+      fill(r,g,b);
+      if(mouseX > 90 && mouseX < 310 && mouseY < 330 && mouseY > 250)
+        fill(darkHighlight);
+    }
     
     rect(90,250,250,80);
     fill(100,0,0);
@@ -296,6 +393,13 @@ void draw() {
     
     
     fill(r,g,b);
+    
+    if(mouseX > 90 && mouseX < 310 && mouseY < 430 && mouseY > 350 && lightsOn)
+       fill(lightHighlight);
+    
+    else if(mouseX > 90 && mouseX < 310 && mouseY < 430 && mouseY > 350 && !lightsOn)
+       fill(darkHighlight);
+    
     rect(90,350,250,80);
     fill(100,0,0);
     textAlign(LEFT);
