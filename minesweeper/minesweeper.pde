@@ -128,6 +128,13 @@ void draw() {
          
     if(clockStarted)
       clock = millis();
+      
+    fill(0);
+    rect(7, 7, 70, 35);
+    fill(180,0,0);
+    textSize(25);
+    textAlign(LEFT);
+    text(str(brojPreostalihMina), 40, 35);
      
     fill(0);
     if(difficulty==3)
@@ -164,13 +171,14 @@ void draw() {
           pobjednicki_zvuk = new SoundFile(this, "pobjednicki_zvuk.mp3");
           pobjednicki_zvuk.play();
        }
+      fill(0);
+      rect(7, 7, 70, 35);
+      fill(180,0,0);
+      textSize(25);
+      textAlign(LEFT);
+      text(str(brojPreostalihMina), 40, 35);
     }
-    fill(0);
-    rect(7, 7, 70, 35);
-    fill(180,0,0);
-    textSize(25);
-    textAlign(LEFT);
-    text(str(brojPreostalihMina), 40, 35);
+
   }
   
   else if(gameState == gameLost)
