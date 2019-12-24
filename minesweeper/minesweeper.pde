@@ -3,7 +3,15 @@ SoundFile zvuk,eksplozija;
 
 import java.util.ArrayList;
 
-int gameState = 0; 
+final int izbornik = 0;
+final int playing = 1;
+final int gameLost = 2;
+final int gameWon = 3;
+final int options = 4;
+final int tezina = 5;
+
+int gameState = izbornik; 
+
 
 int velicinaPolja = 25;
 int brojMina = 40;
@@ -40,7 +48,7 @@ void setup() {
 
 void draw() {
   
-  if(gameState == 0)
+  if(gameState == izbornik)
   {
     background(211,211,211);
     
@@ -68,7 +76,7 @@ void draw() {
   }
  
   
-  else if(gameState == 1){
+  else if(gameState == playing){
     
     if(difficulty == 2)
     {
@@ -137,11 +145,11 @@ void draw() {
       }
     if(win())
     {
-       gameState=3;
+       gameState = gameWon;
     }
   }
   
-  else if(gameState == 2)
+  else if(gameState == gameLost)
   {
     for (int i = 0; i < rows; i++) 
       for (int j = 0; j < cols; j++)
@@ -170,7 +178,7 @@ void draw() {
     //textSize(50);
     //text("Game over", 200, 200);
   }
-  else if(gameState == 3)
+  else if(gameState == gameWon)
   {
     for (int i = 0; i < rows; i++) 
       for (int j = 0; j < cols; j++)
@@ -183,7 +191,7 @@ void draw() {
   
   
   
-  else if(gameState == 4)
+  else if(gameState == options)
   {
     background(211,211,211);
     
@@ -221,7 +229,7 @@ void draw() {
   }
   
   
-  else if(gameState == 5)
+  else if(gameState == tezina)
   {
     background(211,211,211);
     
@@ -276,26 +284,26 @@ void draw() {
 
 void mousePressed(){
   
-  if(gameState == 0)
+  if(gameState == izbornik)
   {
     if(mouseX > 90 && mouseX < 310 && mouseY < 130 && mouseY > 50)
-      gameState = 1;
+      gameState = playing;
     
     
     else if(mouseX > 90 && mouseX < 310 && mouseY < 230 && mouseY > 150)
-      gameState = 4;
+      gameState = options;
     
     else if(mouseX > 90 && mouseX < 310 && mouseY < 330 && mouseY > 250)
-      gameState = 5;
+      gameState = tezina;
   
   }
     
-  else if(gameState == 1)
+  else if(gameState == playing)
   {     
      // stisnut je smiley
     if(mouseX > smile_x  &&  mouseX < smile_x+35 && mouseY < 42 && mouseY > 7 )
     {
-      gameState = 1;
+      gameState = playing;
       firstClick = false;
       //cols = width/velicinaPolja;
       //rows = (height-50)/velicinaPolja;
@@ -343,7 +351,7 @@ void mousePressed(){
             {
               grid[i][j].pogodena = true;
               delay(200);
-              gameState = 2;
+              gameState = gameLost;
               if(!bezZvuka)
               {
                 eksplozija = new SoundFile(this, "eksplozija.mp3");
@@ -391,11 +399,11 @@ void mousePressed(){
 
   }
   
-  else if(gameState == 2 || gameState == 3)
+  else if(gameState == gameLost || gameState == gameWon)
   {
     if(mouseX > smile_x  &&  mouseX < smile_x+35 && mouseY < 42 && mouseY > 7)
     {
-      gameState = 1;
+      gameState = playing;
       firstClick = false;
       //cols = width/velicinaPolja;
       //rows = (height-50)/velicinaPolja;
@@ -416,7 +424,7 @@ void mousePressed(){
      }
   }
   
-  else if(gameState == 4)
+  else if(gameState == options)
   {
     if(mouseX > 90 && mouseX < 310 && mouseY < 130 && mouseY > 50)
       bezZvuka = false;
@@ -426,11 +434,11 @@ void mousePressed(){
       bezZvuka = true;
     
     else if(mouseX > 90 && mouseX < 310 && mouseY < 330 && mouseY > 250)
-      gameState = 0;
+      gameState = izbornik;
     
   }
   
-  else if(gameState == 5)
+  else if(gameState == tezina)
   {
     if(mouseX > 90 && mouseX < 340 && mouseY < 130 && mouseY > 50)
     {
@@ -490,7 +498,7 @@ void mousePressed(){
      }
      
     else if(mouseX > 90 && mouseX < 340 && mouseY < 430 && mouseY > 350)
-      gameState = 0;
+      gameState = izbornik;
   }
   
 }
@@ -558,7 +566,7 @@ void open_closed_neighbours(int x, int y)
   if(kraj)
   {
     delay(200);
-    gameState = 2;
+    gameState = gameLost;
     if(!bezZvuka)
     {
       eksplozija = new SoundFile(this, "eksplozija.mp3");
