@@ -117,13 +117,13 @@ void draw() {
     else if(difficulty == 1)
     {
       surface.setSize(225, 275);
-      smile_x = 97; timer_x = 180;
+      smile_x = 97; timer_x = 170;
     }
     
     else if(difficulty == 3)
     {
       surface.setSize(750, 450);
-      smile_x=340; timer_x = 700;
+      smile_x=340; timer_x = 690;
     }
     
     
