@@ -18,7 +18,7 @@ int gameState = izbornik;
 
 
 int velicinaPolja = 25;
-int brojMina = 40;
+int brojMina = 3;
 int brojPreostalihMina = brojMina;
 int cols, rows;
 boolean firstClick = false;
@@ -125,14 +125,7 @@ void draw() {
     PImage smile;
     smile = loadImage("smile.png");
     image(smile, smile_x, 7, 35, 35);
-    
-    fill(0);
-    rect(7, 7, 70, 35);
-    fill(180,0,0);
-    textSize(25);
-    textAlign(LEFT);
-    text(str(brojPreostalihMina), 40, 35);
-      
+         
     if(clockStarted)
       clock = millis();
      
@@ -172,6 +165,12 @@ void draw() {
           pobjednicki_zvuk.play();
        }
     }
+    fill(0);
+    rect(7, 7, 70, 35);
+    fill(180,0,0);
+    textSize(25);
+    textAlign(LEFT);
+    text(str(brojPreostalihMina), 40, 35);
   }
   
   else if(gameState == gameLost)
@@ -812,6 +811,7 @@ boolean win()
         }
       }
     }
+    brojPreostalihMina=0;
   }
   
   if(opened==(rows*cols-brojMina))
