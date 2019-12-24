@@ -57,8 +57,7 @@ void setup() {
 void draw() {
   
   if(gameState == izbornik)
-  {
-    
+  {   
     background(r,g,b);
     fill(r,g,b);
     
@@ -68,16 +67,13 @@ void draw() {
     else if(mouseX > 90 && mouseX < 310 && mouseY < 130 && mouseY > 50 && !lightsOn)
       fill(darkHighlight);
      
- 
-    
     stroke(r,g,b);
     rect(90,50,220,80);
     fill(100,0,0);
     textAlign(LEFT);
     textSize(40);
     text("New game", 100, 100);
-    
-    
+     
     fill(r,g,b);
     if(mouseX > 90 && mouseX < 310 && mouseY < 230 && mouseY > 150 && lightsOn)
       fill(lightHighlight);
@@ -105,7 +101,6 @@ void draw() {
     text("Difficulty", 110, 300);
   }
  
-  
   else if(gameState == playing){
     
     if(difficulty == 2)
@@ -125,26 +120,22 @@ void draw() {
       surface.setSize(750, 450);
       smile_x=340; timer_x = 690;
     }
-    
-    
+     
     background(r,g,b);
     PImage smile;
     smile = loadImage("smile.png");
     image(smile, smile_x, 7, 35, 35);
     
-   
     fill(0);
     rect(7, 7, 70, 35);
     fill(180,0,0);
     textSize(25);
     textAlign(LEFT);
     text(str(brojPreostalihMina), 40, 35);
-    
-    
+      
     if(clockStarted)
       clock = millis();
-    
-   
+     
     fill(0);
     if(difficulty==3)
       rect(670, 7, 70, 35);
@@ -161,13 +152,10 @@ void draw() {
       text(str(999), timer_x, 35);
     else
       text(str(0),timer_x,35);
-    //println(clock);
-    
-    
+      
     textAlign(CENTER,CENTER);
     textSize(14);
-    
-      
+          
     for (int i = 0; i < rows; i++) 
       for (int j = 0; j < cols; j++)
       {
@@ -216,9 +204,7 @@ void draw() {
         }
       }
       if(!bezZvuka) zvuk.stop();
-    //fill(0);
-    //textSize(50);
-    //text("Game over", 200, 200);
+      
   }
   else if(gameState == gameWon)
   {
@@ -234,9 +220,7 @@ void draw() {
     text("YOU WON", width/2,height/2);
     zvuk.stop();
   }
-  
-  
-  
+   
   else if(gameState == options)
   {
     background(r,g,b);
@@ -290,7 +274,6 @@ void draw() {
     
     else text("Lights on", 110, 200); 
     
-   
     fill(r,g,b); 
     
     if(mouseX > 90 && mouseX < 310 && mouseY < 330 && mouseY > 250 && lightsOn)
@@ -304,12 +287,8 @@ void draw() {
     textAlign(LEFT);
     textSize(40);
     text("Back", 150, 300);
-    
-    
-    
-    // mozda ubaciti igru pomocu tipkovnice
+      
   }
-  
   
   else if(gameState == tezina)
   {
@@ -341,8 +320,7 @@ void draw() {
     textAlign(LEFT);
     textSize(40);
     text("Begginer", 130, 100);
-    
-    
+     
     if(difficulty == 2)
     {
       fill(0,152,0);
@@ -396,9 +374,7 @@ void draw() {
     textAlign(LEFT);
     textSize(40);
     text("Expert", 150, 300);
-    
-    
-    
+     
     fill(r,g,b);
     
     if(mouseX > 90 && mouseX < 310 && mouseY < 430 && mouseY > 350 && lightsOn)
@@ -413,10 +389,8 @@ void draw() {
     textSize(40);
     text("Back", 165, 400);
     
-    // mozda ubaciti igru pomocu tipkovnice
   }
-  
-  
+   
 }
 
 void mousePressed(){
@@ -442,8 +416,6 @@ void mousePressed(){
     {
       gameState = playing;
       firstClick = false;
-      //cols = width/velicinaPolja;
-      //rows = (height-50)/velicinaPolja;
       brojPreostalihMina = brojMina;
       clockStarted = false;
       clockAtStart = millis();
@@ -546,8 +518,6 @@ void mousePressed(){
     {
       gameState = playing;
       firstClick = false;
-      //cols = width/velicinaPolja;
-      //rows = (height-50)/velicinaPolja;
       brojPreostalihMina = brojMina;
       clockStarted = false;
       clockAtStart = millis();
@@ -745,9 +715,6 @@ int neighbour_flags(int x, int y)
   return br;
 }
 
-
-
-
 void set_mines(int x, int y)
 {
   int[] a = new int[cols*rows];
@@ -776,11 +743,8 @@ void set_mines(int x, int y)
     k++;
     if(br >= brojMina) break;
  }    
-
-  
-     
+ 
 }
-
 
 //postavi brojeve svim celijama
 
@@ -855,14 +819,3 @@ boolean win()
   else  
     return false;
 }
-
-/*void countMines()
-{
-  int br = 0;
-  for(int i = 0; i < rows; ++i)
-  for(int j = 0; j < cols; ++j)
-  if(grid[i][j].mina)
-  br++;
-  
-  println(br);
-}*/

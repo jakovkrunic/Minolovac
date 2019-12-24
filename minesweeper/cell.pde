@@ -4,7 +4,7 @@ class Cell
   boolean mina;
   boolean otvoreno;
   boolean zastavica;
-  int broj;          //svaka celija koja nije mina ima broj (koliko ima mina u susjednim celijama)
+  int broj;    
   
   boolean pogodena = false;
   boolean istaknuta = false;
@@ -23,9 +23,6 @@ class Cell
   
   void drawCell() 
   { 
-    //fill(220,220,220);
-    //stroke(0);
-    //rect(this.x, this.y, this.velicina, this.velicina);
     if(this.istaknuta)
     {
       fill(192,192,192);
@@ -36,10 +33,6 @@ class Cell
     {
       if(this.mina)
       {
-        //fill(0);
-        //ellipse(this.x + this.velicina*0.5, this.y + this.velicina*0.5,
-          //this.velicina*0.5, this.velicina*0.5);
-          
            PImage mina;
            mina = loadImage("mina.jpg");
            image(mina, this.x+1, this.y+1, this.velicina-1, this.velicina-1);
@@ -88,9 +81,6 @@ class Cell
     
     else if(this.zastavica)
     {
-        //fill(255,0,0);
-        //ellipse(this.x + this.velicina*0.5, this.y + this.velicina*0.5,
-          //          this.velicina*0.5, this.velicina*0.5);
        PImage zastavica;
        zastavica = loadImage("zastavica.png");
        image(zastavica, this.x+1, this.y+1, this.velicina-1, this.velicina-1);
@@ -108,12 +98,11 @@ class Cell
    {
      if(this.x < x && this.x + this.velicina > x
           && this.y < y && this.y + this.velicina > y)
-          return true;
+        return true;
           
-          return false;
+        return false;
    }
-   
-   
+    
   boolean isNeighbour(int nx, int ny)
   {
     //dolje desno
@@ -152,7 +141,6 @@ class Cell
   
   }
   
-  
   ArrayList<Cell> getNeighbours()
   {
     ArrayList<Cell> susjedi = new ArrayList();
@@ -161,11 +149,9 @@ class Cell
       for(int j = 0; j < cols; j++)
         if(grid[i][j].isNeighbour(this.x, this.y))
           susjedi.add(grid[i][j]);
- 
-    
+  
     return susjedi;
 
   }
-  
-  
+   
 }
