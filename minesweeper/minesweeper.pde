@@ -706,6 +706,37 @@ void open_closed_neighbours(int x, int y)
   }
 }
 
+
+void keyPressed()
+{
+  if((gameState == playing || gameState == gameWon || gameState == gameLost) && key == 'q')
+  {
+    gameState = izbornik;
+    firstClick = false;
+    brojPreostalihMina = brojMina;
+    clockStarted = false;
+    clockAtStart = millis();
+      
+    grid = new Cell[rows][cols];  
+    for (int i = 0; i < rows; i++) 
+    {
+      for (int j = 0; j < cols; j++) 
+      {
+        grid[i][j] = new Cell(i * velicinaPolja, 50 + j * velicinaPolja, velicinaPolja);
+      }
+    }
+    if(zvuk != null && !bezZvuka)
+      zvuk.stop();
+    
+    surface.setSize(400, 450);
+    
+  }
+}
+
+
+
+
+
 //izbroji koliko susjeda ima postavljenu zastavicu
 int neighbour_flags(int x, int y)
 {
