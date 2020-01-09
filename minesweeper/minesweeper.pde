@@ -508,11 +508,17 @@ void mousePressed(){
           else if(grid[i][j].isChosen(mouseX, mouseY) && (mouseButton == CENTER)
                  && grid[i][j].otvoreno && neighbour_flags(i,j)!=grid[i][j].broj)
           {
+            PImage smile;
+            smile = loadImage("smiley_bj.png");
+            image(smile, smile_x, 7, 35, 35);
             highlight_closed_neighbours(i,j);
           }
           else if(grid[i][j].isChosen(mouseX, mouseY) && (mouseButton == CENTER)
                  && grid[i][j].otvoreno && neighbour_flags(i,j)==grid[i][j].broj)
           {
+            PImage smile;
+            smile = loadImage("smiley_bj.png");
+            image(smile, smile_x, 7, 35, 35);
             open_closed_neighbours(i,j);
 
           }
