@@ -225,6 +225,8 @@ void draw() {
     
     fill(0);
     text("YOU WON", width/2,height/2);
+    textAlign(CENTER,CENTER);
+    textSize(14);
     if(!bezZvuka) zvuk.stop();
   }
    
