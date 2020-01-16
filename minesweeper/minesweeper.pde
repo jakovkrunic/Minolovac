@@ -160,7 +160,7 @@ void draw() {
       for (int j = 0; j < cols; j++)
       {
         grid[i][j].drawCell();
-        if(grid[i][j].broj == 0 && grid[i][j].otvoreno)
+        if(grid[i][j].broj == 0 && grid[i][j].otvoreno && !grid[i][j].otvorio_susjede)
           open_neighbours(i,j);
       }
     if(win())
@@ -651,6 +651,7 @@ void open_neighbours(int x, int y)
     if(!susjed.zastavica)
       susjed.otvoreno = true;     
   }
+  grid[x][y].otvorio_susjede=true;
   
 }
 

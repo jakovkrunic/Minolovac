@@ -9,6 +9,8 @@ class Cell
   boolean pogodena = false;
   boolean istaknuta = false;
   
+  boolean otvorio_susjede = false;
+  
   Cell(int x, int y, int velicina)
   {
     this.x = x;
