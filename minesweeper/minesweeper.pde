@@ -177,6 +177,9 @@ void draw() {
       textSize(25);
       textAlign(LEFT);
       text(str(brojPreostalihMina), 40, 35);
+      
+      textAlign(CENTER,CENTER);
+      textSize(14);
     }
 
   }
@@ -225,8 +228,10 @@ void draw() {
     
     fill(0);
     text("YOU WON", width/2,height/2);
+    
     textAlign(CENTER,CENTER);
     textSize(14);
+    
     if(!bezZvuka) zvuk.stop();
   }
    
