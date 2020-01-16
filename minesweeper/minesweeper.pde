@@ -441,7 +441,7 @@ void mousePressed(){
          zvuk.stop();
      }
     
-    if(!firstClick && mouseY >= 50)
+    if(!firstClick && mouseY >= 50 && (mouseButton == LEFT))
     {
       clockStarted = true;
       clockAtStart = millis();
@@ -648,7 +648,8 @@ void open_neighbours(int x, int y)
   for(int k = 0; k < susjedi.size(); k++)
   {
     Cell susjed = susjedi.get(k);
-    susjed.otvoreno = true;     
+    if(!susjed.zastavica)
+      susjed.otvoreno = true;     
   }
   
 }
